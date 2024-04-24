@@ -26,7 +26,7 @@ class WeatherData:
         self.is_day = is_day
 
     def showData(self):
-        print(f"Date: {self.date.day}.{self.date.month}.{self.date.year} {self.hour}, Localization: {self.localization}")
+        print(f"Date: {self.date.day}.{self.date.month}.{self.date.year}, Hour: {self.hour}:00, Week day:{self.date.weekday()}, Localization: {self.localization}")
         print(f"Precipitation probability: {self.precipitation_probability} %")
         print(f"Cloud cover: {self.cloud_cover} %")
         print(f"Visibility: {self.visibility} m")
@@ -93,31 +93,57 @@ def hourlyForecast(response):
     # print(hourly_dataframe.loc[0]["date"])
 
     return hourly_dataframe
-    
 
-session = createSession()
-response = getApiResponse(session)
-week_dataframe  = hourlyForecast(response)
+def api_test():
+    session = createSession()
+    response = getApiResponse(session)
+    week_dataframe  = hourlyForecast(response)
 
-week_forecast = [] 
+    week_forecast = [] 
 
-for i in range(7):
-    day_and_hour = 24*(i)
-    hour = week_dataframe.loc[i]["date"].hour
+    for i in range(7):
+        day_and_hour = 24*(i)
+        hour = week_dataframe.loc[i]["date"].hour
 
-    day_forecast = WeatherData(date=week_dataframe.loc[i]["date"],
-                               hour=hour,
-                               temperature=week_dataframe.loc[i]["temperature_2m"], 
-                               humidity=week_dataframe.loc[i]["relative_humidity_2m"],
-                               precipitation_probability=week_dataframe.loc[i]["precipitation_probability"],
-                               cloud_cover=week_dataframe.loc[i]["cloud_cover"],
-                               visibility=week_dataframe.loc[i]["visibility"],
-                               wind_speed=week_dataframe.loc[i]["wind_speed_10m"],
-                               uv_index=week_dataframe.loc[i]["uv_index"],
-                               is_day=week_dataframe.loc[i]["is_day"])
-    
-    week_forecast.append(day_forecast)
+        day_forecast = WeatherData(date=week_dataframe.loc[i]["date"],
+                                hour=hour,
+                                temperature=week_dataframe.loc[i]["temperature_2m"], 
+                                humidity=week_dataframe.loc[i]["relative_humidity_2m"],
+                                precipitation_probability=week_dataframe.loc[i]["precipitation_probability"],
+                                cloud_cover=week_dataframe.loc[i]["cloud_cover"],
+                                visibility=week_dataframe.loc[i]["visibility"],
+                                wind_speed=week_dataframe.loc[i]["wind_speed_10m"],
+                                uv_index=week_dataframe.loc[i]["uv_index"],
+                                is_day=week_dataframe.loc[i]["is_day"])
+        
+        week_forecast.append(day_forecast)
 
-for day in week_forecast:
-    day.showData()
-    print("\n")
+    for day in week_forecast:
+        day.showData()
+        print("\n")
+
+def get_weather_info():
+    session = createSession()
+    response = getApiResponse(session)
+    week_dataframe  = hourlyForecast(response)
+
+    week_forecast = [] 
+
+    for i in range(24*7):
+        day_and_hour = i
+        hour = week_dataframe.loc[i]["date"].hour
+
+        day_forecast = WeatherData(date=week_dataframe.loc[i]["date"],
+                                hour=hour,
+                                temperature=week_dataframe.loc[i]["temperature_2m"], 
+                                humidity=week_dataframe.loc[i]["relative_humidity_2m"],
+                                precipitation_probability=week_dataframe.loc[i]["precipitation_probability"],
+                                cloud_cover=week_dataframe.loc[i]["cloud_cover"],
+                                visibility=week_dataframe.loc[i]["visibility"],
+                                wind_speed=week_dataframe.loc[i]["wind_speed_10m"],
+                                uv_index=week_dataframe.loc[i]["uv_index"],
+                                is_day=week_dataframe.loc[i]["is_day"])
+        
+        week_forecast.append(day_forecast)
+
+    return week_forecast
