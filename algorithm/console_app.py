@@ -13,7 +13,7 @@ def main():
     visibility_t = int(input("Enter your prefered visibility: "))
     wind_speed_t = int(input("Enter your prefered wind speed: "))
     uv_index_t = int(input("Enter your prefered uv index: "))
-    is_day_t = int(input("Is day ora night better: "))
+    is_day_t = int(input("Is day or a night better: "))
 
     while(True):
         if input("You have some addictional acivity (y/n): ") != "y":
