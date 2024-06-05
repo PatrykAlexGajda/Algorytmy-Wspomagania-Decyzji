@@ -1,12 +1,13 @@
 import math
 import sys
 import os
-import get_api
-import user_preferenes
-import weekly_schedule
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(current_dir, '..', 'api'))
+
+import get_api
+import user_preferenes
+import weekly_schedule
 
 week_points = {
     0: {points: 0 for points in range(24)},
