@@ -29,5 +29,8 @@ class UserPreferences:
             self.uv_index = uv_index
         if is_day is not None:
             self.is_day = is_day
+            
+    def bind_attributes(self):
+        return self.hour, self.temperature, self.humidity, self.precipitation_probability, self.cloud_cover, self.visibility, self.wind_speed, self.uv_index, self.is_day
 
 data = UserPreferences(18, 15, 50, 0, 0, 5000, 0, 0, True)
