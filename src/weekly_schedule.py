@@ -9,11 +9,11 @@ class Activity(Enum):
 
 # Define the week data dictionary with enum values
 data = {
-    0: {hour: Activity.FREE for hour in range(24)},
+    0: {hour: Activity.WORK for hour in range(24)},
     1: {hour: Activity.FREE for hour in range(24)},
-    2: {hour: Activity.FREE for hour in range(24)},
+    2: {hour: Activity.WORK for hour in range(24)},
     3: {hour: Activity.FREE for hour in range(24)},
-    4: {hour: Activity.FREE for hour in range(24)},
+    4: {hour: Activity.WORK for hour in range(24)},
     5: {hour: Activity.FREE for hour in range(24)},
     6: {hour: Activity.FREE for hour in range(24)}
 }

@@ -1,12 +1,8 @@
 import math
 import sys
 import os
-
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(current_dir, '..', 'api'))
-
 import get_api
-import user_preferenes
+import user_preferences
 import weekly_schedule
 
 week_points = {
@@ -125,15 +121,15 @@ def calculate_best():
 
     for day_hour in weather_info:
 
-        hour_points = calculate_points(day_hour.hour, user_preferenes.data.hour, 10)
-        temperature_points = calculate_points(day_hour.temperature, user_preferenes.data.temperature, 10)
-        humidity_points = calculate_points(day_hour.humidity, user_preferenes.data.humidity, 10)
-        precipitation_probability_points = calculate_points(day_hour.precipitation_probability, user_preferenes.data.precipitation_probability, 10)
-        cloud_cover_points = calculate_points(day_hour.cloud_cover, user_preferenes.data.cloud_cover, 10)
-        visibility_points = calculate_points(day_hour.visibility, user_preferenes.data.visibility, 10)
-        wind_speed_points = calculate_points(day_hour.wind_speed, user_preferenes.data.wind_speed, 10)
-        uv_index_points = calculate_points(day_hour.uv_index, user_preferenes.data.uv_index, 10)
-        is_day_points = calculate_points(day_hour.is_day, user_preferenes.data.is_day, 10)
+        hour_points = calculate_points(day_hour.hour, user_preferences.data.hour, 10)
+        temperature_points = calculate_points(day_hour.temperature, user_preferences.data.temperature, 10)
+        humidity_points = calculate_points(day_hour.humidity, user_preferences.data.humidity, 10)
+        precipitation_probability_points = calculate_points(day_hour.precipitation_probability, user_preferences.data.precipitation_probability, 10)
+        cloud_cover_points = calculate_points(day_hour.cloud_cover, user_preferences.data.cloud_cover, 10)
+        visibility_points = calculate_points(day_hour.visibility, user_preferences.data.visibility, 10)
+        wind_speed_points = calculate_points(day_hour.wind_speed, user_preferences.data.wind_speed, 10)
+        uv_index_points = calculate_points(day_hour.uv_index, user_preferences.data.uv_index, 10)
+        is_day_points = calculate_points(day_hour.is_day, user_preferences.data.is_day, 10)
 
         sum_points = hour_points + temperature_points + humidity_points + precipitation_probability_points 
         + cloud_cover_points + visibility_points + wind_speed_points + uv_index_points + is_day_points
@@ -149,15 +145,15 @@ def calculate_best_separate():
 
     for day_hour in weather_info:
 
-        hour_points = calculate_points(day_hour.hour, user_preferenes.data.hour, 10)
-        temperature_points = calculate_points(day_hour.temperature, user_preferenes.data.temperature, 10)
-        humidity_points = calculate_points(day_hour.humidity, user_preferenes.data.humidity, 10)
-        precipitation_probability_points = calculate_points(day_hour.precipitation_probability, user_preferenes.data.precipitation_probability, 10)
-        cloud_cover_points = calculate_points(day_hour.cloud_cover, user_preferenes.data.cloud_cover, 10)
-        visibility_points = calculate_points(day_hour.visibility, user_preferenes.data.visibility, 10)
-        wind_speed_points = calculate_points(day_hour.wind_speed, user_preferenes.data.wind_speed, 10)
-        uv_index_points = calculate_points(day_hour.uv_index, user_preferenes.data.uv_index, 10)
-        is_day_points = calculate_points(day_hour.is_day, user_preferenes.data.is_day, 10)
+        hour_points = calculate_points(day_hour.hour, user_preferences.data.hour, 10)
+        temperature_points = calculate_points(day_hour.temperature, user_preferences.data.temperature, 10)
+        humidity_points = calculate_points(day_hour.humidity, user_preferences.data.humidity, 10)
+        precipitation_probability_points = calculate_points(day_hour.precipitation_probability, user_preferences.data.precipitation_probability, 10)
+        cloud_cover_points = calculate_points(day_hour.cloud_cover, user_preferences.data.cloud_cover, 10)
+        visibility_points = calculate_points(day_hour.visibility, user_preferences.data.visibility, 10)
+        wind_speed_points = calculate_points(day_hour.wind_speed, user_preferences.data.wind_speed, 10)
+        uv_index_points = calculate_points(day_hour.uv_index, user_preferences.data.uv_index, 10)
+        is_day_points = calculate_points(day_hour.is_day, user_preferences.data.is_day, 10)
 
         sum_points = hour_points + temperature_points + humidity_points + precipitation_probability_points 
         + cloud_cover_points + visibility_points + wind_speed_points + uv_index_points + is_day_points
@@ -172,6 +168,7 @@ def write_to_calendar():
 
     weekly_schedule.change_status(weekly_schedule.data, chosen_day, chosen_hour, 3)
 
+
 def write_to_calendar_separate():
     best_each_day = calculate_best_separate()
 
@@ -184,6 +181,30 @@ def write_to_calendar_separate():
     weekly_schedule.change_status(weekly_schedule.data, chosen_day, chosen_hour, 3)
 
 
-# write_to_calendar()
 
-# weekly_schedule.print_week_data(weekly_schedule.data)
+
+
+
+
+
+def gui_string_max_points(max_points_per_day):
+    result_string = ""
+    for day, (points, hour) in max_points_per_day.items():
+        if hour is not None:
+            result_string += f"On {day}, maximum points ({points}) were earned at hour {hour}.\n"
+        else:
+            result_string += f"No points were earned on {day}.\n"
+    
+    return result_string
+
+def gui_write_to_calendar_separate():
+    best_each_day = calculate_best_separate()
+
+    max_points_results = gui_string_max_points(best_each_day)
+
+    return max_points_results
+
+def gui_get_final_week(chosen_day):
+    best_each_day = calculate_best_separate()
+    chosen_hour =  best_each_day[chosen_day][1]
+    weekly_schedule.change_status(weekly_schedule.data, chosen_day, chosen_hour, 3)
